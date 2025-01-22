@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Register user
 router.post("/register", async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, isAdmin } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({ name, email, password: hashedPassword, isAdmin });
 
     try {
         const createdUser = await user.save();
@@ -36,28 +36,31 @@ router.post("/register", async (req, res) => {
 
 // Login user
 router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+  const user = await User.findOne({ email });
 
-    if (!user) {
-        return res.status(400).json({ message: "Invalid credentials" });
-    }
+  if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+  }
 
-    const match = await bcrypt.compare(password, user.password);
+  // Compare the provided password with the hashed password in the database
+  const match = await bcrypt.compare(password, user.password);
 
-    if (!match) {
-        return res.status(400).json({ message: "Invalid credentials" });
-    }
+  if (!match) {
+      return res.status(400).json({ message: "Invalid credentials" });
+  }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+  // Generate the JWT token
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
-    res.json({ token });
+  // Return the user details and token in the response
+  res.json({
+      name: user.name,    // Include name
+      email: user.email,  // Include email
+      token: token        // Include token
+  });
 });
 
-// Logout user
-router.post("/logout", protect, (req, res) => {
-    res.json({ message: "Logged out successfully" });
-});
 
 module.exports = router;

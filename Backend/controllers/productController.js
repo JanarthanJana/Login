@@ -1,5 +1,6 @@
 const Product = require("../models/productModel");
 const path = require("path");
+const fs = require("fs"); // Import the file system module
 
 // Add Product
 exports.addProduct = async (req, res) => {
@@ -66,7 +67,7 @@ exports.updateProduct = async (req, res) => {
     }
 };
 
-// Delete Product
+//delete product
 exports.deleteProduct = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
@@ -75,9 +76,22 @@ exports.deleteProduct = async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        await product.remove();
-        res.status(200).json({ message: "Product removed successfully" });
+        // Check and delete the associated image file
+        if (product.image) {
+            const imagePath = path.join(__dirname, "../uploads", product.image);
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error("Error deleting image:", err);
+                }
+            });
+        }
+
+        // Delete the product from the database
+        await Product.deleteOne({ _id: req.params.id });
+
+        res.status(200).json({ message: "Product and its image deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
