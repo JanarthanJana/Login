@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
 export default function Header() {
   return (
     <nav className="navbar row">
       <div className="col-12 col-md-3">
         <div className="navbar-brand">
-          <img width="150px" src="/images/logo.png" />
+          
+          {/* <img width="150px" src="/images/logo.png" /> */}
         </div>
       </div>
 
@@ -24,12 +26,13 @@ export default function Header() {
       </div>
 
       <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-        <span id="cart" className="ml-3">
-          Cart
-        </span>
-        <span className="ml-1" id="cart_count">
-          2
-        </span>
+        {/* <btn className="ml-5 btn btn-danger">
+          Logout
+        </btn> */}
+        <Link to={"/login"} btn btn-danger>
+        Logout
+        </Link>
+        
       </div>
     </nav>
   );

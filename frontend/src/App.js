@@ -7,13 +7,29 @@ import Dashboard from "./components/Dashboard";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ProductDetail from "./pages/ProductDetail";
 
 
 const App = () => {
     return (
         <div classNamme="App">
-            <Header></Header>
-            <Home></Home>
+            <Router>
+                <div>
+                
+                <Routes>
+                  <Route path="/" element={<Header></Header>}></Route>
+                </Routes>
+                <Routes>
+                  <Route path="/" element={<Home/>}></Route>
+                </Routes>
+                <Routes>
+                  <Route path="/product/:id" element={<ProductDetail/>}></Route>
+                </Routes>
+                </div>
+                
+            </Router>
+            
+            
             <Footer></Footer>
         
         </div>

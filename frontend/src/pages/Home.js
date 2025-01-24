@@ -14,7 +14,7 @@ export default function Home() {
 
       <section id="products" className="container mt-5">
         <div className="row">
-          {products.map(product=><ProductCard />)}
+          {products.map(product=><ProductCard product={product}/>)}
           
         </div>
       </section>

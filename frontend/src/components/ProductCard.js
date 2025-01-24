@@ -1,24 +1,66 @@
-export default function ProductCard() {
+import { Link } from "react-router-dom";
+export default function ProductCard({ product }) {
+  // Base URL for images
+  const baseURL = "http://localhost:5000/uploads/";
+
+  // Default rating if not provided
+  const rating = product.rating || 0;
+
+  // Generate stars based on the rating
+  const renderStars = () => {
+    const totalStars = 5; // Maximum stars
+    const fullStars = Math.floor(rating); // Number of full stars
+    const halfStar = rating % 1 >= 0.5; // Check if there's a half star
+    const emptyStars = totalStars - fullStars - (halfStar ? 1 : 0); // Remaining empty stars
+
+    // Generate stars array
+    const stars = [
+      ...Array(fullStars).fill("★"), // Full stars
+      ...(halfStar ? ["☆"] : []),   // Half star
+      ...Array(emptyStars).fill("☆"), // Empty stars
+    ];
+
+    return stars.map((star, index) => (
+      <span
+        key={index}
+        style={{
+          color: star === "★" ? "#f8ce0b" : "#ccc", // Gold for filled, grey for empty
+          fontSize: "18px",
+        }}
+      >
+        {star}
+      </span>
+    ));
+  };
+
   return (
     <div className="col-sm-12 col-md-6 col-lg-3 my-3">
       <div className="card p-3 rounded">
-        <img className="card-img-top mx-auto" src="/images/products/1.jpg" />
+        {/* Construct full image URL */}
+        <img
+          className="card-img-top mx-auto"
+          src={`${baseURL}${product.image}`}
+          alt={product.name || "Product Image"}
+          style={{
+            maxWidth: "100%",
+            height: "150px",
+            display: "block",
+          }}
+        />
         <div className="card-body d-flex flex-column">
           <h5 className="card-title">
-            <a href="">
-              OPPO F21s Pro 5G (Dawnlight Gold, 8GB RAM, 128 Storage) with No
-              Cost EMI/Additional Exchange Offers
-            </a>
+          <Link to={"/product/product.id"}>{product.name.replace(/"/g, "")}</Link>
           </h5>
-          <div className="ratings mt-auto">
-            <div className="rating-outer">
-              <div className="rating-inner"></div>
-            </div>
+
+          {/* Ratings Section */}
+          <div className="ratings mt-auto" style={{ display: "flex", gap: "2px" }}>
+            {renderStars()}
           </div>
-          <p className="card-text">$245.67</p>
-          <a href="#" id="view_btn" className="btn btn-block">
+
+          <p className="card-text">${product.price}</p>
+          <Link to={"/product/product.id"} id="view_btn" className="btn btn-warning">
             View Details
-          </a>
+          </Link>
         </div>
       </div>
     </div>
