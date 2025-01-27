@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import "./Login.css"; // For styling
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -51,10 +52,12 @@ const Login = () => {
           />
         </div>
         {error && <p className="error-message">{error}</p>}
-        <button type="submit" className="login-btn">
+        <Link to={"/"}> <button type="submit" className="login-btn">
           Login
         </button>
+        </Link>
       </form>
+      
     </div>
   );
 };

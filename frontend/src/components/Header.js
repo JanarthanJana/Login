@@ -29,7 +29,7 @@ export default function Header() {
         {/* <btn className="ml-5 btn btn-danger">
           Logout
         </btn> */}
-        <Link to={"/login"} btn btn-danger>
+        <Link to={"/login"} className ="btn btn-danger">
         Logout
         </Link>
         

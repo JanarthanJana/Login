@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 export default function ProductCard({ product }) {
   // Base URL for images
   const baseURL = "http://localhost:5000/uploads/";
@@ -47,18 +48,14 @@ export default function ProductCard({ product }) {
             display: "block",
           }}
         />
-        <div className="card-body d-flex flex-column">
+        <div className="card-body d-flex flex-column text-center"> {/* Added text-center here */}
           <h5 className="card-title">
-          <Link to={"/product/product.id"}>{product.name.replace(/"/g, "")}</Link>
+            <Link to={"/product/" + product._id}>{product.name.replace(/"/g, "")}</Link>
           </h5>
 
-          {/* Ratings Section */}
-          <div className="ratings mt-auto" style={{ display: "flex", gap: "2px" }}>
-            {renderStars()}
-          </div>
+          <p className="card-text">RS.{product.price}</p>
 
-          <p className="card-text">${product.price}</p>
-          <Link to={"/product/product.id"} id="view_btn" className="btn btn-warning">
+          <Link to={"/product/" + product._id} id="view_btn" className="btn btn-warning">
             View Details
           </Link>
         </div>
